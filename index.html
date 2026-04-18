@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ffffff">
+    <title>דוח התקדמות - טומי אפק</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Fixed Chart.js version -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        body {
+            font-family: 'Assistant', sans-serif;
+            background-color: #f8fafc;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+        
+        /* iOS Safe Area Utilities */
+        .pt-safe { padding-top: env(safe-area-inset-top); }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+
+        .tab-active {
+            color: #db2777;
+            border-bottom: 2px solid #db2777;
+            background-color: rgba(219, 39, 119, 0.05);
+        }
+        
+        /* Disable pull-to-refresh feel on body to simulate app */
+        body { overscroll-behavior-y: none; }
+        
+        .placeholder-text {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* Custom Checkbox Styling */
+        .task-checkbox:checked + div {
+            text-decoration: line-through;
+            color: #9ca3af;
+        }
+        .task-checkbox:checked + div .check-icon {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .check-icon {
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Toast Notification - iOS Style */
+        #toast {
+            visibility: hidden;
+            min-width: 90%; 
+            background-color: rgba(30, 30, 30, 0.95);
+            backdrop-filter: blur(10px);
+            color: #fff; 
+            text-align: center; 
+            border-radius: 50px; 
+            padding: 16px; 
+            position: fixed; 
+            z-index: 100; 
+            left: 50%; 
+            top: 20px;
+            transform: translateX(-50%) translateY(-100px);
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            font-weight: 600;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateX(-50%) translateY(env(safe-area-inset-top));
+        }
+
+        /* Prevent zoom on inputs for iOS */
+        input, select, textarea {
+            font-size: 16px !important; 
+        }
+
+        /* Smooth scrolling */
+        .smooth-scroll {
+            -webkit-overflow-scrolling: touch;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Sticky Header Background for Notch -->
+    <div class="fixed top-0 left-0 w-full h-safe-top bg-white z-50 pt-safe"></div>
+
+    <div class="container relative mx-auto bg-white sm:rounded-3xl sm:shadow-2xl sm:my-8 min-h-screen sm:min-h-[calc(100vh-4rem)] overflow-hidden max-w-4xl">
+        
+        <!-- App Header -->
+        <header class="relative text-center pt-8 pb-6 px-4 pt-safe bg-white z-40">
+            <!-- Logo SVG -->
+            <div class="flex justify-center mb-4 opacity-90">
+                <svg class="h-16 w-auto sm:h-20" viewBox="0 0 120 50" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#2d3748">
+                        <rect x="18" y="6" width="8" height="38" rx="2"/>
+                        <rect x="10" y="9" width="8" height="32" rx="2"/>
+                        <rect x="2" y="12" width="8" height="26" rx="2"/>
+                    </g>
+                    <rect x="26" y="18" width="6" height="14" rx="2" fill="#a0aec0"/>
+                    <g fill="#2d3748">
+                        <rect x="94" y="6" width="8" height="38" rx="2"/>
+                        <rect x="102" y="9" width="8" height="32" rx="2"/>
+                        <rect x="110" y="12" width="8" height="26" rx="2"/>
+                    </g>
+                    <rect x="88" y="18" width="6" height="14" rx="2" fill="#a0aec0"/>
+                    <path d="M 32 25 L 50 25 L 53 28 L 58 10 L 63 45 L 66 25 L 88 25" stroke="#ef4444" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" fill="none"/>
+                </svg>
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight">דוח התקדמות</h1>
+            <p class="text-base text-slate-500 font-medium">טומי אפק</p>
+        </header>
+
+        <!-- Sticky Navigation -->
+        <nav class="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-100 shadow-sm">
+            <div class="flex overflow-x-auto smooth-scroll no-scrollbar px-2 sm:justify-center gap-1 pb-1 pt-1">
+                <button id="progressTab" class="whitespace-nowrap flex-shrink-0 py-3 px-4 sm:px-6 font-bold text-sm tab-active rounded-lg transition-all">דוח התקדמות</button>
+                <button id="homeworkTab" class="whitespace-nowrap flex-shrink-0 py-3 px-4 sm:px-6 font-bold text-sm text-slate-500 rounded-lg transition-all">שיעורי בית</button>
+                <button id="trainingTab" class="whitespace-nowrap flex-shrink-0 py-3 px-4 sm:px-6 font-bold text-sm text-slate-500 rounded-lg transition-all">אימונים</button>
+                <button id="nutritionTab" class="whitespace-nowrap flex-shrink-0 py-3 px-4 sm:px-6 font-bold text-sm text-slate-500 rounded-lg transition-all">תזונה</button>
+            </div>
+        </nav>
+
+        <main class="p-4 sm:p-8 bg-slate-50 min-h-screen sm:min-h-0">
+            <!-- Content Panes -->
+            <div id="contentPanes" class="pb-10">
+                
+                <!-- Progress Report Pane -->
+                <div id="progressContent">
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-8">
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col items-center justify-center text-center">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">אימונים</h3>
+                            <p class="text-lg font-bold text-slate-800">5 בוצעו</p>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col items-center justify-center text-center">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">סטטוס</h3>
+                            <p class="text-lg font-bold text-blue-600">ממשיכים בכל הכוח! 🔥</p>
+                        </div>
+                        <div class="col-span-2 md:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col items-center justify-center text-center">
+                            <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">הישג בולט</h3>
+                            <p class="text-lg font-bold text-slate-800 text-sm">8 שיאים באימון 5! 🏆</p>
+                        </div>
+                    </div>
+
+                     <div class="bg-white border-r-4 border-indigo-500 p-5 rounded-2xl shadow-sm mb-8 flex items-start gap-4">
+                        <div class="bg-indigo-50 p-2 rounded-full flex-shrink-0">
+                            <i data-lucide="zap" class="text-indigo-500 w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm mb-1">אימון 5 מאחורינו! ⚡</p>
+                            <p class="text-sm text-slate-600 leading-relaxed">מטורף טומי! עוד 8 שיאים אישיים חדשים נשברו! ההתמדה שלך משתלמת ורואים את הכוח עולה מאימון לאימון. תמשיך להפציץ! 👑</p>
+                        </div>
+                    </div>
+
+                    <!-- New Goals Card -->
+                    <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl p-6 shadow-md mb-8 text-white relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-white opacity-10 rounded-full -mr-10 -mt-10"></div>
+                        <h2 class="text-xl font-bold mb-3 flex items-center gap-2 relative z-10">
+                            <i data-lucide="target" class="w-6 h-6"></i>
+                            המטרות שלנו
+                        </h2>
+                        <ul class="space-y-3 relative z-10">
+                            <li class="flex items-center gap-3 bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+                                <i data-lucide="activity" class="w-5 h-5 text-blue-100"></i>
+                                <span class="font-medium">1. לשפר סיבולת</span>
+                            </li>
+                             <li class="flex items-center gap-3 bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+                                <i data-lucide="scissors" class="w-5 h-5 text-blue-100"></i>
+                                <span class="font-medium">2. להתחטב</span>
+                            </li>
+                             <li class="flex items-center gap-3 bg-white/20 p-3 rounded-xl backdrop-blur-sm">
+                                <i data-lucide="dumbbell" class="w-5 h-5 text-blue-100"></i>
+                                <span class="font-medium">3. להתחזק ולהגדיל מסת שריר</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="mb-8">
+                        <div class="flex justify-between items-end mb-4 px-1">
+                            <h2 class="text-xl font-bold text-slate-800">מעקב התקדמות</h2>
+                        </div>
+                        
+                        <div class="bg-white p-5 rounded-3xl shadow-sm border border-slate-100">
+                            <!-- Exercise Selector -->
+                            <div class="mb-4">
+                                <label for="exerciseSelect" class="block text-xs font-bold text-slate-400 uppercase mb-2">בחר תרגיל להצגה:</label>
+                                <div class="relative">
+                                    <select id="exerciseSelect" class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold text-base rounded-xl py-3 px-4 pr-10 appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
+                                        <option value="incline_smith_press">💪 לחיצת חזה סמית עליון</option>
+                                        <option value="barbell_row">🏋️ חתירה עם מוט</option>
+                                        <option value="wide_machine_row">🚣 חתירה רחבה במכונה</option>
+                                        <option value="machine_lat_pulldown">🏋️ פולי עליון מכונה</option>
+                                        <option value="t_bar_row">🦍 טיבר</option>
+                                        <option value="machine_shoulder_press">🏋️ לחיצת כתפיים (מכונה/משקולות)</option>
+                                        <option value="seated_lateral_raises">🦅 הרחקות בישיבה</option>
+                                        <option value="dumbbell_flyes">🦋 פרפר (משקולות/קרוס)</option>
+                                        <option value="assisted_dips">💪 מקבילים (גרביטון)</option>
+                                        <option value="overhead_triceps_extension">💪 פשיטה מאחורי הראש עם משקולת</option>
+                                        <option value="leg_press">🦵 לחיצת רגליים</option>
+                                        <option value="hack_squat">🦵 האק סקוואט</option>
+                                        <option value="smith_machine_squat">🏋️ סקוואט בסמית</option>
+                                        <option value="seated_leg_curl">🦵 כפיפת ברכיים בישיבה</option>
+                                        <option value="lying_leg_curl">🦵 כפיפה בשכיבה</option>
+                                        <option value="bulgarian_split_squat">🦵 סקוואט בולגרי יד אחת</option>
+                                        <option value="romanian_deadlift">🏋️ דדליפט רומני</option>
+                                        <option value="preacher_curl">💪 כפיפה בכומר במכונה</option>
+                                        <option value="roman_chair">🪑 כיסא רומי</option>
+                                        <option value="decline_crunches">🍫 כפיפות בטן בשיפוע תחתון</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center px-4 text-slate-500">
+                                        <i data-lucide="chevron-down" class="w-5 h-5"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Chart Container -->
+                            <div class="relative h-64 w-full bg-white rounded-2xl p-2 flex items-center justify-center">
+                                <!-- Chart canvas (hidden initially if no data, or showing empty grid) -->
+                                <canvas id="coreProgressChart"></canvas>
+                                <!-- Overlay for empty state -->
+                                <div id="emptyChartOverlay" class="absolute inset-0 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm z-10 rounded-2xl">
+                                    <i data-lucide="bar-chart-3" class="w-8 h-8 text-slate-300 mb-2"></i>
+                                    <p class="text-sm font-bold text-slate-400">הגרף יתעדכן לאחר האימון הראשון</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Exercise History List -->
+                            <div id="exerciseHistoryContainer" class="mt-6 hidden">
+                                <h3 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-2 border-b border-slate-100 pb-2">
+                                    <i data-lucide="history" class="w-4 h-4 text-indigo-500"></i>
+                                    היסטוריית ביצועים: <span id="historyExerciseName" class="text-indigo-600"></span>
+                                </h3>
+                                <ul id="exerciseHistoryList" class="space-y-2 max-h-48 overflow-y-auto pr-1 custom-scrollbar">
+                                    <!-- List items will be injected here via JS -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                        <div class="bg-slate-50/50 px-6 py-4 border-b border-slate-100 flex justify-between items-center backdrop-blur">
+                            <h2 class="text-lg font-bold text-slate-800">שיאים אישיים (PRs)</h2>
+                            <i data-lucide="trophy" class="text-yellow-500 w-5 h-5"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">לחיצת חזה סמית עליון</p>
+                                            <p class="text-xs text-slate-500">4 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">17.5 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">חתירה רחבה במכונה</p>
+                                            <p class="text-xs text-slate-500">7 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">25 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">חתירה עם מוט</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">20 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">פולי עליון מכונה</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">30 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">טיבר</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">22.5 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">לחיצת כתפיים משקולות</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">8 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">הרחקות בישיבה אחורה</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">6 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">פרפר קרוס בעמידה</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">5 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">מקבילים בגרביטון</p>
+                                            <p class="text-xs text-slate-500">4 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">-35 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">פשיטה מאחורי הראש</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">12.5 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">סקוואט בסמית</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">10 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">לחיצת רגליים</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">100 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">האק סקוואט</p>
+                                            <p class="text-xs text-slate-500">5 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">60 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">סקוואט בולגרי יד אחת</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">5 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">דדליפט</p>
+                                            <p class="text-xs text-slate-500">3 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">30 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">כפיפת ברכיים בישיבה</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">25 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">כפיפה בשכיבה</p>
+                                            <p class="text-xs text-slate-500">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">5 פלטות</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">כפיפה בכומר במכונה</p>
+                                            <p class="text-xs text-slate-500">7 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">15 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">כיסא רומי</p>
+                                            <p class="text-xs text-slate-500">סט</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">7 חזרות</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">כפיפות בטן בשיפוע תחתון</p>
+                                            <p class="text-xs text-slate-500">סט</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">6 חזרות</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Homework Pane (Locked) -->
+                <div id="homeworkContent" class="hidden">
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-12 flex flex-col items-center justify-center text-center mt-4">
+                        <div class="bg-slate-50 p-5 rounded-full mb-4">
+                            <i data-lucide="lock" class="w-10 h-10 text-slate-400"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">שיעורי בית</h2>
+                        <p class="text-slate-500 font-medium text-lg">כרגע נעול - יפתח בהמשך התהליך</p>
+                    </div>
+                </div>
+
+                <!-- Training Plans Pane -->
+                <div id="trainingContent" class="hidden">
+                    <div class="mb-12 mt-4">
+                        <h2 class="text-3xl font-black text-center mb-6 text-slate-800 tracking-tight">תוכנית אימונים: Full Body Workout</h2>
+                        
+                        <div class="bg-amber-50 border-r-4 border-amber-400 p-6 rounded-2xl shadow-sm mb-8">
+                            <h3 class="text-xl font-bold text-amber-800 mb-4 flex items-center gap-2">
+                                <i data-lucide="info"></i>
+                                דגשים חשובים: איך לגשת לסט?
+                            </h3>
+                            <ul class="space-y-3 text-slate-700 list-disc list-inside">
+                                <li>
+                                    <strong>חימום לפני כל תרגיל:</strong> 1-3 סטים. בתרגילים פשוטים (כמו כפיפת מרפק) מספיק סט אחד, ובתרגילים מורכבים (כמו סקוואט) בצעו עד 3 סטים. הקשיבו לגוף ואל תמהרו.
+                                    <ul class="pr-6 mt-2 space-y-1 text-sm text-slate-600">
+                                        <li class="list-none"><strong>דוגמה לחימום (בחתירה עם מוט, סט עבודה 60 ק"ג):</strong></li>
+                                        <li>סט 1: 20 ק"ג x 10 חזרות</li>
+                                        <li>סט 2: 40 ק"ג x 6 חזרות</li>
+                                        <li>סט 3: 50 ק"ג x 3 חזרות</li>
+                                    </ul>
+                                </li>
+                                <li><strong>מנוחה בין סטים:</strong> 1-3 דקות, בהתאם לעצימות הסט וההרגשה האישית.</li>
+                                <li><strong>אינטנסיביות וטכניקה:</strong> המטרה היא להגיע קרוב לכשל, או עד לכשל מוחלט, בכל סט עבודה. <strong class="text-amber-900">הדגש החשוב ביותר הוא לשמור על טכניקה נכונה לאורך כל התנועה!</strong></li>
+                            </ul>
+                        </div>
+
+                        <div class="max-w-3xl mx-auto bg-white rounded-3xl shadow-sm border border-slate-100 p-5 sm:p-8">
+                            <h3 class="text-2xl font-bold text-indigo-600 mb-6 border-b border-slate-100 pb-3">אימון Full Body - מעקב משקלים</h3>
+                            <ul class="space-y-6 text-slate-700">
+                                
+                                <!-- תרגיל 1 -->
+                                <li class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex justify-between items-start sm:items-center w-full mb-3 flex-col sm:flex-row gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <a href="#" title="הכנס לינק לסרטון כאן" class="text-slate-400 hover:text-red-500 transition-colors">
+                                                <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                            </a>
+                                            <span class="font-bold text-lg">לחיצת חזה בסמית / מכונה / משקולות</span>
+                                        </div>
+                                        <span class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full whitespace-nowrap">3 סטים • 6-12 חזרות</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 1 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 2 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 3 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- תרגיל 2 -->
+                                <li class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex justify-between items-start sm:items-center w-full mb-3 flex-col sm:flex-row gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <a href="#" title="הכנס לינק לסרטון כאן" class="text-slate-400 hover:text-red-500 transition-colors">
+                                                <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                            </a>
+                                            <span class="font-bold text-lg">האק סקוואט / פשיטות ברכיים</span>
+                                        </div>
+                                        <span class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full whitespace-nowrap">3 סטים • 6-12 חזרות</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 1 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 2 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 3 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- תרגיל 3 -->
+                                <li class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex justify-between items-start sm:items-center w-full mb-3 flex-col sm:flex-row gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <a href="#" title="הכנס לינק לסרטון כאן" class="text-slate-400 hover:text-red-500 transition-colors">
+                                                <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                            </a>
+                                            <span class="font-bold text-lg">הרחקות כתפיים / לחיצת כתפיים</span>
+                                        </div>
+                                        <span class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full whitespace-nowrap">3 סטים • 6-12 חזרות</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 1 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 2 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 3 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- תרגיל 4 -->
+                                <li class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex justify-between items-start sm:items-center w-full mb-3 flex-col sm:flex-row gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <a href="#" title="הכנס לינק לסרטון כאן" class="text-slate-400 hover:text-red-500 transition-colors">
+                                                <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                            </a>
+                                            <span class="font-bold text-lg">פולי עליון משיכה אנכית</span>
+                                        </div>
+                                        <span class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full whitespace-nowrap">3 סטים • 6-12 חזרות</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 1 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 2 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 3 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- תרגיל 5 -->
+                                <li class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex justify-between items-start sm:items-center w-full mb-3 flex-col sm:flex-row gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <a href="#" title="הכנס לינק לסרטון כאן" class="text-slate-400 hover:text-red-500 transition-colors">
+                                                <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                            </a>
+                                            <span class="font-bold text-lg">חתירה רחבה במכונה</span>
+                                        </div>
+                                        <span class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full whitespace-nowrap">3 סטים • 6-12 חזרות</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 1 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 2 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 3 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- תרגיל 6 -->
+                                <li class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex justify-between items-start sm:items-center w-full mb-3 flex-col sm:flex-row gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <a href="#" title="הכנס לינק לסרטון כאן" class="text-slate-400 hover:text-red-500 transition-colors">
+                                                <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                            </a>
+                                            <span class="font-bold text-lg">כפיפת מרפקים יד קדמית</span>
+                                        </div>
+                                        <span class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full whitespace-nowrap">3 סטים • 6-12 חזרות</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 1 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 2 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 3 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- תרגיל 7 -->
+                                <li class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex justify-between items-start sm:items-center w-full mb-3 flex-col sm:flex-row gap-2">
+                                        <div class="flex items-center gap-2">
+                                            <a href="#" title="הכנס לינק לסרטון כאן" class="text-slate-400 hover:text-red-500 transition-colors">
+                                                <i data-lucide="play-circle" class="w-6 h-6"></i>
+                                            </a>
+                                            <span class="font-bold text-lg">פשיטות מרפקים בכבל / מקבילים במכונה</span>
+                                        </div>
+                                        <span class="text-sm font-bold bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full whitespace-nowrap">3 סטים • 6-12 חזרות</span>
+                                    </div>
+                                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 1 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 2 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <label class="text-xs text-slate-500 font-bold mb-1">סט 3 (ק"ג)</label>
+                                            <input type="number" placeholder="-" class="w-full text-center border border-slate-200 rounded-xl bg-slate-50 focus:bg-white focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none py-2 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Nutrition Pane (Locked) -->
+                <div id="nutritionContent" class="hidden">
+                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-12 flex flex-col items-center justify-center text-center mt-4">
+                        <div class="bg-slate-50 p-5 rounded-full mb-4">
+                            <i data-lucide="lock" class="w-10 h-10 text-slate-400"></i>
+                        </div>
+                        <h2 class="text-2xl font-bold text-slate-800 mb-2">תזונה</h2>
+                        <p class="text-slate-500 font-medium text-lg">כרגע נעול - יפתח בהמשך התהליך</p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+        
+        <!-- Toast Element -->
+        <div id="toast">
+            <div class="flex items-center justify-center gap-2">
+                <i data-lucide="check-circle" class="w-5 h-5 text-green-400"></i>
+                <span>ההודעה הועתקה בהצלחה!</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            
+            // Tab Switching Logic
+            const tabs = ['progress', 'homework', 'training', 'nutrition'];
+            
+            function switchTab(activeId) {
+                // Hide all content, deactivate all tabs
+                tabs.forEach(id => {
+                    document.getElementById(id + 'Content').classList.add('hidden');
+                    const btn = document.getElementById(id + 'Tab');
+                    btn.classList.remove('tab-active', 'text-slate-900');
+                    btn.classList.add('text-slate-500');
+                });
+                
+                // Show active content, activate tab
+                document.getElementById(activeId + 'Content').classList.remove('hidden');
+                const activeBtn = document.getElementById(activeId + 'Tab');
+                activeBtn.classList.add('tab-active', 'text-slate-900');
+                activeBtn.classList.remove('text-slate-500');
+                
+                // Scroll selected tab into view on mobile
+                activeBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+            }
+
+            tabs.forEach(id => {
+                document.getElementById(id + 'Tab').addEventListener('click', () => switchTab(id));
+            });
+
+            // --- Homework Logic & Sharing ---
+            const taskCheckboxes = document.querySelectorAll('.task-checkbox');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const completionMessage = document.getElementById('completionMessage');
+            const shareBtn = document.getElementById('shareBtn');
+            const toast = document.getElementById('toast');
+            
+            function updateHomeworkProgress() {
+                if(!taskCheckboxes.length) return; // Prevent error if locked
+
+                const totalTasks = taskCheckboxes.length;
+                const completedTasks = Array.from(taskCheckboxes).filter(cb => cb.checked).length;
+                const percentage = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
+
+                if(progressBar) progressBar.style.width = `${percentage}%`;
+                if(progressText) progressText.textContent = `${completedTasks}/${totalTasks}`;
+
+                if (completedTasks === totalTasks && totalTasks > 0) {
+                    if(completionMessage) completionMessage.classList.remove('hidden');
+                    // Add Confetti Effect if not already shown
+                    if (completionMessage && !completionMessage.dataset.shown) {
+                         confetti({
+                            particleCount: 150,
+                            spread: 70,
+                            origin: { y: 0.7 },
+                            disableForReducedMotion: true
+                        });
+                        completionMessage.dataset.shown = "true";
+                    }
+                } else {
+                    if(completionMessage) completionMessage.classList.add('hidden');
+                }
+            }
+
+            taskCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', updateHomeworkProgress);
+            });
+            
+            // Trigger check on load if tasks are pre-checked
+            updateHomeworkProgress();
+
+            // Show toast function
+            function showToast() {
+                toast.className = "show";
+                setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+            }
+
+            const updateMessage = "טומי סיים בהצלחה את האימון שלו! מתחילים דרך חדשה ומעולה יחד! 💪";
+
+            // Share API (Mobile Native Share)
+            if(shareBtn) {
+                shareBtn.addEventListener('click', async () => {
+                    if (navigator.share) {
+                        try {
+                            await navigator.share({
+                                title: 'עדכון אימון - טומי',
+                                text: updateMessage,
+                            });
+                        } catch (err) {
+                            console.log('Error sharing:', err);
+                        }
+                    } else {
+                        // Fallback for desktop: Open WhatsApp Web
+                        window.open(`https://wa.me/?text=${encodeURIComponent(updateMessage)}`, '_blank');
+                    }
+                });
+            }
+            
+            // --- Improved Dynamic Chart Logic ---
+            let chartInstance = null;
+            
+            const progressData = {
+                labels: ['אימון 1', 'אימון 2', 'אימון 3', 'אימון 4', 'אימון 5', 'אימון 6', 'אימון 7', 'אימון 8', 'אימון 9', 'אימון 10'],
+                exercises: {
+                    incline_smith_press: {
+                        label: 'לחיצת חזה סמית עליון',
+                        data: [10, 10, 12.5, 12.5, 17.5, null, null, null, null, null],
+                        color: '#f43f5e', // rose
+                        gradientStart: 'rgba(244, 63, 94, 0.4)',
+                        unit: 'kg'
+                    },
+                    barbell_row: {
+                        label: 'חתירה עם מוט',
+                        data: [null, null, 20, null, null, null, null, null, null, null],
+                        color: '#ef4444', // red
+                        gradientStart: 'rgba(239, 68, 68, 0.4)',
+                        unit: 'kg'
+                    },
+                    wide_machine_row: {
+                        label: 'חתירה רחבה במכונה',
+                        data: [null, 25, null, null, null, null, null, null, null, null],
+                        color: '#3b82f6', // blue
+                        gradientStart: 'rgba(59, 130, 246, 0.4)',
+                        unit: 'kg'
+                    },
+                    machine_lat_pulldown: {
+                        label: 'פולי עליון מכונה',
+                        data: [27.5, 27.5, 30, 30, null, null, null, null, null, null],
+                        color: '#0ea5e9', // sky
+                        gradientStart: 'rgba(14, 165, 233, 0.4)',
+                        unit: 'kg'
+                    },
+                    t_bar_row: {
+                        label: 'טיבר',
+                        data: [20, null, null, 22.5, null, null, null, null, null, null],
+                        color: '#6366f1', // indigo
+                        gradientStart: 'rgba(99, 102, 241, 0.4)',
+                        unit: 'kg'
+                    },
+                    machine_shoulder_press: {
+                        label: 'לחיצת כתפיים (מכונה/משקולות)',
+                        data: [12.5, 10, null, null, 8, null, null, null, null, null],
+                        color: '#f59e0b', // amber
+                        gradientStart: 'rgba(245, 158, 11, 0.4)',
+                        unit: 'kg'
+                    },
+                    seated_lateral_raises: {
+                        label: 'הרחקות בישיבה',
+                        data: [5, null, 6, 6, null, null, null, null, null, null],
+                        color: '#8b5cf6', // violet
+                        gradientStart: 'rgba(139, 92, 246, 0.4)',
+                        unit: 'kg'
+                    },
+                    dumbbell_flyes: {
+                        label: 'פרפר (משקולות/קרוס)',
+                        data: [4, 5, null, null, 5, null, null, null, null, null],
+                        color: '#10b981', // emerald
+                        gradientStart: 'rgba(16, 185, 129, 0.4)',
+                        unit: 'kg'
+                    },
+                    assisted_dips: {
+                        label: 'מקבילים גרביטון',
+                        data: [null, null, -56, -49, -35, null, null, null, null, null],
+                        color: '#0f766e', // teal
+                        gradientStart: 'rgba(15, 118, 110, 0.4)',
+                        unit: 'kg'
+                    },
+                    overhead_triceps_extension: {
+                        label: 'פשיטה מאחורי הראש',
+                        data: [null, 7, 10, null, 12.5, null, null, null, null, null],
+                        color: '#a855f7', // purple
+                        gradientStart: 'rgba(168, 85, 247, 0.4)',
+                        unit: 'kg'
+                    },
+                    leg_press: {
+                        label: 'לחיצת רגליים',
+                        data: [100, null, null, null, null, null, null, null, null, null],
+                        color: '#ec4899', // pink
+                        gradientStart: 'rgba(236, 72, 153, 0.4)',
+                        unit: 'kg'
+                    },
+                    hack_squat: {
+                        label: 'האק סקוואט',
+                        data: [null, null, 60, null, null, null, null, null, null, null],
+                        color: '#d946ef', // fuchsia
+                        gradientStart: 'rgba(217, 70, 239, 0.4)',
+                        unit: 'kg'
+                    },
+                    smith_machine_squat: {
+                        label: 'סקוואט בסמית',
+                        data: [null, 10, null, null, null, null, null, null, null, null],
+                        color: '#fb923c', // orange
+                        gradientStart: 'rgba(251, 146, 60, 0.4)',
+                        unit: 'kg'
+                    },
+                    seated_leg_curl: {
+                        label: 'כפיפת ברכיים בישיבה',
+                        data: [25, null, null, null, null, null, null, null, null, null],
+                        color: '#14b8a6', // teal
+                        gradientStart: 'rgba(20, 184, 166, 0.4)',
+                        unit: 'kg'
+                    },
+                    lying_leg_curl: {
+                        label: 'כפיפה בשכיבה',
+                        data: [null, 5, 5, null, null, null, null, null, null, null],
+                        color: '#06b6d4', // cyan
+                        gradientStart: 'rgba(6, 182, 212, 0.4)',
+                        unit: 'פלטות'
+                    },
+                    bulgarian_split_squat: {
+                        label: 'סקוואט בולגרי יד אחת',
+                        data: [null, null, null, 5, null, null, null, null, null, null],
+                        color: '#f43f5e',
+                        gradientStart: 'rgba(244, 63, 94, 0.4)',
+                        unit: 'kg'
+                    },
+                    romanian_deadlift: {
+                        label: 'דדליפט',
+                        data: [null, null, null, 35, 30, null, null, null, null, null],
+                        color: '#ef4444',
+                        gradientStart: 'rgba(239, 68, 68, 0.4)',
+                        unit: 'kg'
+                    },
+                    preacher_curl: {
+                        label: 'כפיפה בכומר במכונה',
+                        data: [10, null, null, 10, 15, null, null, null, null, null],
+                        color: '#84cc16', // lime
+                        gradientStart: 'rgba(132, 204, 22, 0.4)',
+                        unit: 'kg'
+                    },
+                    roman_chair: {
+                        label: 'כיסא רומי',
+                        data: [null, null, null, null, 7, null, null, null, null, null],
+                        color: '#f97316', // orange
+                        gradientStart: 'rgba(249, 115, 22, 0.4)',
+                        unit: 'חזרות'
+                    },
+                    decline_crunches: {
+                        label: 'בטן בשיפוע תחתון',
+                        data: [null, 6, null, null, null, null, null, null, null, null],
+                        color: '#facc15', // yellow
+                        gradientStart: 'rgba(250, 204, 21, 0.4)',
+                        unit: 'חזרות'
+                    }
+                }
+            };
+
+            function updateChart(exerciseKey) {
+                const ctx = document.getElementById('coreProgressChart').getContext('2d');
+                const overlay = document.getElementById('emptyChartOverlay');
+                const exercise = progressData.exercises[exerciseKey];
+                
+                // Check if there is any data to display
+                const hasData = exercise.data.some(val => val !== null);
+                
+                if (!hasData) {
+                    // Show overlay if no data exists
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                    if(chartInstance) {
+                        chartInstance.destroy();
+                        chartInstance = null;
+                    }
+                    return;
+                } else {
+                    // Hide overlay if data exists
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                }
+
+                if (chartInstance) {
+                    chartInstance.destroy();
+                }
+
+                // Create Gradient
+                const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+                gradient.addColorStop(0, exercise.gradientStart);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0.0)');
+
+                chartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: progressData.labels,
+                        datasets: [{
+                            label: exercise.label,
+                            data: exercise.data,
+                            borderColor: exercise.color,
+                            backgroundColor: gradient,
+                            tension: 0.3,
+                            fill: true,
+                            pointRadius: 6,
+                            pointHoverRadius: 9,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: exercise.color,
+                            pointBorderWidth: 2,
+                            borderWidth: 3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        animation: {
+                            duration: 1000,
+                            easing: 'easeOutQuart'
+                        },
+                        plugins: {
+                            legend: {
+                                display: true,
+                                labels: {
+                                    font: { family: 'Assistant', size: 13, weight: 'bold' },
+                                    usePointStyle: true,
+                                    boxWidth: 8
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                                titleColor: '#1e293b',
+                                bodyColor: '#475569',
+                                borderColor: '#e2e8f0',
+                                borderWidth: 1,
+                                titleFont: { family: 'Assistant', weight: 'bold' },
+                                bodyFont: { family: 'Assistant' },
+                                padding: 12,
+                                cornerRadius: 12,
+                                displayColors: false,
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            const val = context.parsed.y;
+                                            
+                                            let suffix = exercise.unit || '';
+                                            label += Math.abs(val) + (suffix ? ' ' + suffix : '');
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: { display: false },
+                                ticks: { font: { family: 'Assistant', weight: 'bold' }, color: '#64748b' }
+                            },
+                            y: {
+                                display: true,
+                                grid: { color: '#f1f5f9' },
+                                ticks: { 
+                                    font: { family: 'Assistant' }, 
+                                    color: '#94a3b8',
+                                    callback: function(value) { return Math.abs(value); } 
+                                }
+                            }
+                        }
+                    }
+                });
+
+                // Update History List
+                const historyContainer = document.getElementById('exerciseHistoryContainer');
+                const historyList = document.getElementById('exerciseHistoryList');
+                const historyNameSpan = document.getElementById('historyExerciseName');
+                
+                historyNameSpan.textContent = exercise.label;
+                historyList.innerHTML = ''; // Clear previous items
+
+                let dataFound = false;
+                
+                // Reverse iterate to show newest first, or normal for chronological
+                progressData.labels.forEach((label, index) => {
+                    const val = exercise.data[index];
+                    if (val !== null) {
+                        dataFound = true;
+                        const li = document.createElement('li');
+                        li.className = 'flex justify-between items-center bg-slate-50 hover:bg-slate-100 transition-colors p-3 rounded-xl border border-slate-100 text-sm';
+                        li.innerHTML = `
+                            <span class="font-bold text-slate-700">${label}</span>
+                            <span class="font-black text-indigo-600">${val} <span class="text-xs font-normal text-slate-500">${exercise.unit || 'ק"ג'}</span></span>
+                        `;
+                        historyList.appendChild(li);
+                    }
+                });
+
+                if (dataFound) {
+                    historyContainer.classList.remove('hidden');
+                    // Re-initialize lucide icons for the newly added history icon if needed
+                    lucide.createIcons();
+                } else {
+                    historyContainer.classList.add('hidden');
+                }
+            }
+
+            // Init Chart
+            const exerciseSelect = document.getElementById('exerciseSelect');
+            
+            // Set default view 
+            updateChart('incline_smith_press');
+
+            // Listen for changes
+            exerciseSelect.addEventListener('change', (e) => {
+                updateChart(e.target.value);
+            });
+        });
+    </script>
+</body>
+</html>
