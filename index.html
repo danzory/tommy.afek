@@ -199,7 +199,8 @@
                                 <label for="exerciseSelect" class="block text-xs font-bold text-slate-400 uppercase mb-2">בחר תרגיל להצגה:</label>
                                 <div class="relative">
                                     <select id="exerciseSelect" class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold text-base rounded-xl py-3 px-4 pr-10 appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
-                                        <option value="incline_smith_press">💪 לחיצת חזה (בנץ פרס / סמית)</option>
+                                        <option value="bench_press">💪 לחיצת חזה (בנץ פרס)</option>
+                                        <option value="incline_smith_press">💪 לחיצת חזה סמית עליון</option>
                                         <option value="barbell_row">🏋️ חתירה עם מוט</option>
                                         <option value="wide_machine_row">🚣 חתירה רחבה במכונה</option>
                                         <option value="machine_lat_pulldown">🏋️ פולי עליון מכונה</option>
@@ -331,6 +332,16 @@
                                 </div>
 
                                 <!-- שיאים קודמים -->
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">לחיצת חזה סמית עליון</p>
+                                            <p class="text-xs text-slate-500">4 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">17.5 ק"ג</div>
+                                </div>
                                 <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
                                     <div class="flex items-center gap-3">
                                         <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
@@ -837,9 +848,16 @@
             const progressData = {
                 labels: ['אימון 1', 'אימון 2', 'אימון 3', 'אימון 4', 'אימון 5', 'אימון 6', 'אימון 7', 'אימון 8', 'אימון 9', 'אימון 10'],
                 exercises: {
-                    incline_smith_press: {
+                    bench_press: {
                         label: 'לחיצת חזה (בנץ פרס)',
-                        data: [10, 10, 12.5, 12.5, 17.5, 35, null, null, null, null],
+                        data: [null, null, null, null, null, 35, null, null, null, null],
+                        color: '#8b5cf6',
+                        gradientStart: 'rgba(139, 92, 246, 0.4)',
+                        unit: 'kg'
+                    },
+                    incline_smith_press: {
+                        label: 'לחיצת חזה סמית עליון',
+                        data: [10, 10, 12.5, 12.5, 17.5, null, null, null, null, null],
                         color: '#f43f5e',
                         gradientStart: 'rgba(244, 63, 94, 0.4)',
                         unit: 'kg'
@@ -1138,7 +1156,7 @@
             const exerciseSelect = document.getElementById('exerciseSelect');
             
             // Set default view 
-            updateChart('incline_smith_press');
+            updateChart('bench_press');
 
             // Listen for changes
             exerciseSelect.addEventListener('change', (e) => {
@@ -1148,3 +1166,6 @@
     </script>
 </body>
 </html>
+
+
+```
