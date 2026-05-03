@@ -143,7 +143,7 @@
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-6 mb-8">
                         <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col items-center justify-center text-center">
                             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">אימונים</h3>
-                            <p class="text-lg font-bold text-slate-800">6 בוצעו</p>
+                            <p class="text-lg font-bold text-slate-800">7 בוצעו</p>
                         </div>
                         <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col items-center justify-center text-center">
                             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">סטטוס</h3>
@@ -151,7 +151,7 @@
                         </div>
                         <div class="col-span-2 md:col-span-1 bg-white rounded-2xl shadow-sm border border-slate-100 p-4 flex flex-col items-center justify-center text-center">
                             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wide mb-1">הישג בולט</h3>
-                            <p class="text-lg font-bold text-slate-800 text-sm">7 שיאים באימון 6! 🏆</p>
+                            <p class="text-lg font-bold text-slate-800 text-sm">9 שיאים באימון 7! 🏆</p>
                         </div>
                     </div>
 
@@ -160,8 +160,8 @@
                             <i data-lucide="zap" class="text-indigo-500 w-5 h-5"></i>
                         </div>
                         <div>
-                            <p class="font-bold text-slate-900 text-sm mb-1">אימון 6 מאחורינו! ⚡</p>
-                            <p class="text-sm text-slate-600 leading-relaxed">מטורף טומי! עוד 7 שיאים אישיים חדשים נשברו! ההתמדה שלך משתלמת ורואים את הכוח עולה מאימון לאימון. תמשיך להפציץ! 👑</p>
+                            <p class="font-bold text-slate-900 text-sm mb-1">אימון 7 מאחורינו! ⚡</p>
+                            <p class="text-sm text-slate-600 leading-relaxed">מטורף טומי! אימון 7 נגמר עם לא פחות מ-9 שיאים אישיים חדשים! ההתמדה שלך משתלמת ורואים את הכוח עולה מאימון לאימון. תמשיך להפציץ! 👑</p>
                         </div>
                     </div>
 
@@ -199,18 +199,20 @@
                                 <label for="exerciseSelect" class="block text-xs font-bold text-slate-400 uppercase mb-2">בחר תרגיל להצגה:</label>
                                 <div class="relative">
                                     <select id="exerciseSelect" class="w-full bg-slate-50 border border-slate-200 text-slate-800 font-bold text-base rounded-xl py-3 px-4 pr-10 appearance-none focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-shadow">
-                                        <option value="bench_press">💪 לחיצת חזה (בנץ פרס)</option>
-                                        <option value="incline_smith_press">💪 לחיצת חזה סמית עליון</option>
+                                        <option value="incline_smith_press">💪 לחיצת חזה (בנץ פרס / סמית)</option>
+                                        <option value="incline_bench_press">💪 בנץ עליון</option>
                                         <option value="barbell_row">🏋️ חתירה עם מוט</option>
                                         <option value="wide_machine_row">🚣 חתירה רחבה במכונה</option>
                                         <option value="machine_lat_pulldown">🏋️ פולי עליון מכונה</option>
                                         <option value="t_bar_row">🦍 טיבר</option>
                                         <option value="machine_shoulder_press">🏋️ לחיצת כתפיים (מכונה/משקולות)</option>
                                         <option value="seated_lateral_raises">🦅 הרחקות כתפיים / בישיבה</option>
+                                        <option value="lying_lateral_raises">🦅 הרחקות כתפיים בשכיבה</option>
                                         <option value="dumbbell_flyes">🦋 פרפר (משקולות/קרוס)</option>
                                         <option value="assisted_dips">💪 מקבילים (גרביטון)</option>
                                         <option value="overhead_triceps_extension">💪 פשיטה מאחורי הראש עם משקולת</option>
                                         <option value="leg_press">🦵 לחיצת רגליים</option>
+                                        <option value="calf_press">🦵 תאומים בלחיצת רגליים</option>
                                         <option value="hack_squat">🦵 האק סקוואט</option>
                                         <option value="smith_machine_squat">🏋️ סקוואט בסמית</option>
                                         <option value="seated_leg_curl">🦵 כפיפת ברכיים בישיבה</option>
@@ -259,76 +261,96 @@
                         </div>
                         <div class="p-6">
                             <div class="space-y-3">
-                                <!-- שיאים מאימון 6 מודגשים -->
-                                <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
-                                    <div class="flex items-center gap-3">
-                                        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
-                                        <div>
-                                            <p class="font-bold text-slate-800 text-sm">לחיצת חזה (בנץ פרס)</p>
-                                            <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
-                                        </div>
-                                    </div>
-                                    <div class="font-black text-indigo-600">35 ק"ג</div>
-                                </div>
-                                <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
-                                    <div class="flex items-center gap-3">
-                                        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
-                                        <div>
-                                            <p class="font-bold text-slate-800 text-sm">חתירה עם מוט</p>
-                                            <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
-                                        </div>
-                                    </div>
-                                    <div class="font-black text-indigo-600">30 ק"ג</div>
-                                </div>
+                                <!-- שיאים מאימון 7 מודגשים -->
                                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
                                     <div class="flex items-center gap-3">
                                         <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
                                         <div>
                                             <p class="font-bold text-slate-800 text-sm">פולי עליון מכונה</p>
-                                            <p class="text-xs text-indigo-500 font-semibold">8 חזרות</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
                                         </div>
                                     </div>
-                                    <div class="font-black text-indigo-600">35 ק"ג (כל צד)</div>
+                                    <div class="font-black text-indigo-600">40 ק"ג (כל צד)</div>
                                 </div>
                                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
                                     <div class="flex items-center gap-3">
                                         <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
                                         <div>
-                                            <p class="font-bold text-slate-800 text-sm">הרחקות כתפיים</p>
-                                            <p class="text-xs text-indigo-500 font-semibold">11 חזרות</p>
+                                            <p class="font-bold text-slate-800 text-sm">בנץ עליון</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">5 חזרות</p>
                                         </div>
                                     </div>
-                                    <div class="font-black text-indigo-600">6 ק"ג</div>
+                                    <div class="font-black text-indigo-600">32.5 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">דדליפט</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">5 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-indigo-600">37.5 ק"ג</div>
                                 </div>
                                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
                                     <div class="flex items-center gap-3">
                                         <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
                                         <div>
                                             <p class="font-bold text-slate-800 text-sm">מקבילים בגרביטון</p>
-                                            <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">5 חזרות</p>
                                         </div>
                                     </div>
-                                    <div class="font-black text-indigo-600">-35 ק"ג</div>
+                                    <div class="font-black text-indigo-600">-28 ק"ג</div>
                                 </div>
                                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
                                     <div class="flex items-center gap-3">
                                         <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
                                         <div>
-                                            <p class="font-bold text-slate-800 text-sm">פשיטות ברכיים</p>
-                                            <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
+                                            <p class="font-bold text-slate-800 text-sm">הרחקות בשכיבה</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">8 חזרות</p>
                                         </div>
                                     </div>
-                                    <div class="font-black text-indigo-600">35 ק"ג</div>
+                                    <div class="font-black text-indigo-600">5 ק"ג</div>
                                 </div>
                                 <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
                                     <div class="flex items-center gap-3">
                                         <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
                                         <div>
-                                            <p class="font-bold text-slate-800 text-sm">כפיפה בשכיבה</p>
+                                            <p class="font-bold text-slate-800 text-sm">פרפר קרוס בעמידה</p>
                                             <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
                                         </div>
                                     </div>
-                                    <div class="font-black text-indigo-600">7 פלטות</div>
+                                    <div class="font-black text-indigo-600">7.5 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">האק סקוואט</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-indigo-600">55 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">כומר במכונה</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-indigo-600">20 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-white p-3 rounded-xl border-2 border-indigo-100 shadow-sm">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-indigo-100 p-2 rounded-lg text-indigo-600"><i data-lucide="flame" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">תאומים בלחיצת רגליים</p>
+                                            <p class="text-xs text-indigo-500 font-semibold">8 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-indigo-600">90 ק"ג</div>
                                 </div>
 
                                 <!-- שיאים קודמים -->
@@ -336,11 +358,51 @@
                                     <div class="flex items-center gap-3">
                                         <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
                                         <div>
-                                            <p class="font-bold text-slate-800 text-sm">לחיצת חזה סמית עליון</p>
-                                            <p class="text-xs text-slate-500">4 חזרות</p>
+                                            <p class="font-bold text-slate-800 text-sm">לחיצת חזה (בנץ פרס)</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
                                         </div>
                                     </div>
-                                    <div class="font-black text-slate-800">17.5 ק"ג</div>
+                                    <div class="font-black text-slate-800">35 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">חתירה עם מוט</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">30 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">הרחקות כתפיים (ישיבה)</p>
+                                            <p class="text-xs text-slate-500">11 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">6 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">פשיטות ברכיים</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">35 ק"ג</div>
+                                </div>
+                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <div class="flex items-center gap-3">
+                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
+                                        <div>
+                                            <p class="font-bold text-slate-800 text-sm">כפיפה בשכיבה</p>
+                                            <p class="text-xs text-slate-500">6 חזרות</p>
+                                        </div>
+                                    </div>
+                                    <div class="font-black text-slate-800">7 פלטות</div>
                                 </div>
                                 <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
                                     <div class="flex items-center gap-3">
@@ -376,16 +438,6 @@
                                     <div class="flex items-center gap-3">
                                         <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
                                         <div>
-                                            <p class="font-bold text-slate-800 text-sm">פרפר קרוס בעמידה</p>
-                                            <p class="text-xs text-slate-500">8 חזרות</p>
-                                        </div>
-                                    </div>
-                                    <div class="font-black text-slate-800">5 ק"ג</div>
-                                </div>
-                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
-                                        <div>
                                             <p class="font-bold text-slate-800 text-sm">פשיטה מאחורי הראש</p>
                                             <p class="text-xs text-slate-500">6 חזרות</p>
                                         </div>
@@ -401,16 +453,6 @@
                                         </div>
                                     </div>
                                     <div class="font-black text-slate-800">100 ק"ג</div>
-                                </div>
-                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
-                                        <div>
-                                            <p class="font-bold text-slate-800 text-sm">האק סקוואט</p>
-                                            <p class="text-xs text-slate-500">5 חזרות</p>
-                                        </div>
-                                    </div>
-                                    <div class="font-black text-slate-800">60 ק"ג</div>
                                 </div>
                                 <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
                                     <div class="flex items-center gap-3">
@@ -436,31 +478,11 @@
                                     <div class="flex items-center gap-3">
                                         <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
                                         <div>
-                                            <p class="font-bold text-slate-800 text-sm">דדליפט</p>
-                                            <p class="text-xs text-slate-500">3 חזרות</p>
-                                        </div>
-                                    </div>
-                                    <div class="font-black text-slate-800">30 ק"ג</div>
-                                </div>
-                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
-                                        <div>
                                             <p class="font-bold text-slate-800 text-sm">כפיפת ברכיים בישיבה</p>
                                             <p class="text-xs text-slate-500">6 חזרות</p>
                                         </div>
                                     </div>
                                     <div class="font-black text-slate-800">25 ק"ג</div>
-                                </div>
-                                <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
-                                    <div class="flex items-center gap-3">
-                                        <div class="bg-yellow-100 p-2 rounded-lg text-yellow-600"><i data-lucide="award" class="w-5 h-5"></i></div>
-                                        <div>
-                                            <p class="font-bold text-slate-800 text-sm">כפיפה בכומר במכונה</p>
-                                            <p class="text-xs text-slate-500">7 חזרות</p>
-                                        </div>
-                                    </div>
-                                    <div class="font-black text-slate-800">15 ק"ג</div>
                                 </div>
                                 <div class="flex items-center justify-between bg-slate-50 p-3 rounded-xl border border-slate-100">
                                     <div class="flex items-center gap-3">
@@ -848,16 +870,16 @@
             const progressData = {
                 labels: ['אימון 1', 'אימון 2', 'אימון 3', 'אימון 4', 'אימון 5', 'אימון 6', 'אימון 7', 'אימון 8', 'אימון 9', 'אימון 10'],
                 exercises: {
-                    bench_press: {
+                    incline_smith_press: {
                         label: 'לחיצת חזה (בנץ פרס)',
-                        data: [null, null, null, null, null, 35, null, null, null, null],
-                        color: '#8b5cf6',
-                        gradientStart: 'rgba(139, 92, 246, 0.4)',
+                        data: [10, 10, 12.5, 12.5, 17.5, 35, null, null, null, null],
+                        color: '#f43f5e',
+                        gradientStart: 'rgba(244, 63, 94, 0.4)',
                         unit: 'kg'
                     },
-                    incline_smith_press: {
-                        label: 'לחיצת חזה סמית עליון',
-                        data: [10, 10, 12.5, 12.5, 17.5, null, null, null, null, null],
+                    incline_bench_press: {
+                        label: 'בנץ עליון',
+                        data: [null, null, null, null, null, null, 32.5, null, null, null],
                         color: '#f43f5e',
                         gradientStart: 'rgba(244, 63, 94, 0.4)',
                         unit: 'kg'
@@ -878,7 +900,7 @@
                     },
                     machine_lat_pulldown: {
                         label: 'פולי עליון מכונה',
-                        data: [27.5, 27.5, 30, 30, null, 35, null, null, null, null],
+                        data: [27.5, 27.5, 30, 30, null, 35, 40, null, null, null],
                         color: '#0ea5e9',
                         gradientStart: 'rgba(14, 165, 233, 0.4)',
                         unit: 'kg'
@@ -898,22 +920,29 @@
                         unit: 'kg'
                     },
                     seated_lateral_raises: {
-                        label: 'הרחקות כתפיים',
+                        label: 'הרחקות כתפיים / בישיבה',
                         data: [5, null, 6, 6, null, 6, null, null, null, null],
+                        color: '#8b5cf6',
+                        gradientStart: 'rgba(139, 92, 246, 0.4)',
+                        unit: 'kg'
+                    },
+                    lying_lateral_raises: {
+                        label: 'הרחקות כתפיים בשכיבה',
+                        data: [null, null, null, null, null, null, 5, null, null, null],
                         color: '#8b5cf6',
                         gradientStart: 'rgba(139, 92, 246, 0.4)',
                         unit: 'kg'
                     },
                     dumbbell_flyes: {
                         label: 'פרפר (משקולות/קרוס)',
-                        data: [4, 5, null, null, 5, null, null, null, null, null],
+                        data: [4, 5, null, null, 5, null, 7.5, null, null, null],
                         color: '#10b981',
                         gradientStart: 'rgba(16, 185, 129, 0.4)',
                         unit: 'kg'
                     },
                     assisted_dips: {
                         label: 'מקבילים גרביטון',
-                        data: [null, null, -56, -49, -35, -35, null, null, null, null],
+                        data: [null, null, -56, -49, -35, -35, -28, null, null, null],
                         color: '#0f766e',
                         gradientStart: 'rgba(15, 118, 110, 0.4)',
                         unit: 'kg'
@@ -932,9 +961,16 @@
                         gradientStart: 'rgba(236, 72, 153, 0.4)',
                         unit: 'kg'
                     },
+                    calf_press: {
+                        label: 'תאומים בלחיצת רגליים',
+                        data: [null, null, null, null, null, null, 90, null, null, null],
+                        color: '#ea580c',
+                        gradientStart: 'rgba(234, 88, 12, 0.4)',
+                        unit: 'kg'
+                    },
                     hack_squat: {
                         label: 'האק סקוואט',
-                        data: [null, null, 60, null, null, null, null, null, null, null],
+                        data: [null, null, 60, null, null, null, 55, null, null, null],
                         color: '#d946ef',
                         gradientStart: 'rgba(217, 70, 239, 0.4)',
                         unit: 'kg'
@@ -976,14 +1012,14 @@
                     },
                     romanian_deadlift: {
                         label: 'דדליפט',
-                        data: [null, null, null, 35, 30, null, null, null, null, null],
+                        data: [null, null, null, 35, 30, null, 37.5, null, null, null],
                         color: '#ef4444',
                         gradientStart: 'rgba(239, 68, 68, 0.4)',
                         unit: 'kg'
                     },
                     preacher_curl: {
                         label: 'כפיפה בכומר במכונה',
-                        data: [10, null, null, 10, 15, null, null, null, null, null],
+                        data: [10, null, null, 10, 15, null, 20, null, null, null],
                         color: '#84cc16',
                         gradientStart: 'rgba(132, 204, 22, 0.4)',
                         unit: 'kg'
@@ -1156,7 +1192,7 @@
             const exerciseSelect = document.getElementById('exerciseSelect');
             
             // Set default view 
-            updateChart('bench_press');
+            updateChart('incline_smith_press');
 
             // Listen for changes
             exerciseSelect.addEventListener('change', (e) => {
@@ -1166,6 +1202,3 @@
     </script>
 </body>
 </html>
-
-
-```
