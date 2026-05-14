@@ -722,14 +722,183 @@
                     </div>
                 </div>
 
-                <!-- Nutrition Pane (Locked) -->
+                <!-- Nutrition Pane -->
                 <div id="nutritionContent" class="hidden">
-                    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-12 flex flex-col items-center justify-center text-center mt-4">
-                        <div class="bg-slate-50 p-5 rounded-full mb-4">
-                            <i data-lucide="lock" class="w-10 h-10 text-slate-400"></i>
+                    <div class="mb-12 mt-4 space-y-6">
+                        
+                        <!-- Daily Goal Header -->
+                        <div class="bg-gradient-to-r from-emerald-500 to-teal-600 rounded-3xl p-6 shadow-md text-white relative overflow-hidden">
+                            <div class="absolute top-0 left-0 w-40 h-40 bg-white opacity-10 rounded-full -ml-10 -mt-10"></div>
+                            <div class="relative z-10 flex flex-col items-center text-center">
+                                <span class="bg-white/20 px-4 py-1.5 rounded-full text-sm font-bold backdrop-blur-sm mb-3 border border-white/30">יעד יומי לעלייה נקייה במסה</span>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <i data-lucide="flame" class="w-8 h-8 text-yellow-300"></i>
+                                    <h2 class="text-5xl font-black tracking-tight">2,065</h2>
+                                </div>
+                                <p class="text-lg font-medium text-emerald-50">קלוריות</p>
+                            </div>
                         </div>
-                        <h2 class="text-2xl font-bold text-slate-800 mb-2">תזונה</h2>
-                        <p class="text-slate-500 font-medium text-lg">כרגע נעול - יפתח בהמשך התהליך</p>
+
+                        <!-- Macros Grid -->
+                        <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                            <!-- Protein -->
+                            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col items-center text-center transition-transform hover:-translate-y-1">
+                                <div class="bg-pink-50 p-2 rounded-xl mb-2">
+                                    <i data-lucide="beef" class="w-6 h-6 text-pink-500"></i>
+                                </div>
+                                <span class="text-2xl font-black text-slate-800">130</span>
+                                <span class="text-xs font-bold text-slate-400">חלבון (ג')</span>
+                            </div>
+                            <!-- Carbs -->
+                            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col items-center text-center transition-transform hover:-translate-y-1">
+                                <div class="bg-amber-50 p-2 rounded-xl mb-2">
+                                    <i data-lucide="wheat" class="w-6 h-6 text-amber-500"></i>
+                                </div>
+                                <span class="text-2xl font-black text-slate-800">195</span>
+                                <span class="text-xs font-bold text-slate-400">פחמימה (ג')</span>
+                            </div>
+                            <!-- Fat -->
+                            <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col items-center text-center transition-transform hover:-translate-y-1">
+                                <div class="bg-blue-50 p-2 rounded-xl mb-2">
+                                    <i data-lucide="droplet" class="w-6 h-6 text-blue-500"></i>
+                                </div>
+                                <span class="text-2xl font-black text-slate-800">85</span>
+                                <span class="text-xs font-bold text-slate-400">שומן (ג')</span>
+                            </div>
+                        </div>
+
+                        <!-- Meals List -->
+                        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-5 sm:p-6">
+                            <h3 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2 border-b border-slate-100 pb-4">
+                                <i data-lucide="utensils" class="text-emerald-500"></i>
+                                חלוקת ארוחות מומלצת
+                            </h3>
+                            
+                            <div class="space-y-6">
+                                
+                                <!-- Meal 1 -->
+                                <div class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex flex-wrap justify-between items-center w-full mb-3 gap-2">
+                                        <span class="font-bold text-lg text-slate-800">🍳 ארוחת בוקר / ערב</span>
+                                        <div class="flex gap-2">
+                                            <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md">~650 קלוריות</span>
+                                            <span class="text-xs font-bold bg-pink-50 text-pink-600 px-2 py-1 rounded-md">~35ג' חלבון</span>
+                                        </div>
+                                    </div>
+                                    <ul class="text-sm text-slate-600 space-y-2 pr-2 border-r-2 border-emerald-100">
+                                        <li><strong class="text-slate-700">חלבון:</strong> 3 ביצים / קופסת טונה / גביע קוטג' 5% / 150ג' טופו</li>
+                                        <li><strong class="text-slate-700">פחמימה:</strong> 2 פרוסות לחם מלא (כ-70 גרם) / 1 פיתה כוסמין (100 גרם) / 60 גרם שיבולת שועל (שקילה לפני בישול)</li>
+                                        <li><strong class="text-slate-700">שומן:</strong> 2 כפות טחינה / חצי אבוקדו / 15ג' חמאת בוטנים</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Meal 2 -->
+                                <div class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex flex-wrap justify-between items-center w-full mb-3 gap-2">
+                                        <span class="font-bold text-lg text-slate-800">🍗 ארוחה עיקרית</span>
+                                        <div class="flex gap-2">
+                                            <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md">~850 קלוריות</span>
+                                            <span class="text-xs font-bold bg-pink-50 text-pink-600 px-2 py-1 rounded-md">~60ג' חלבון</span>
+                                        </div>
+                                    </div>
+                                    <ul class="text-sm text-slate-600 space-y-2 pr-2 border-r-2 border-emerald-100">
+                                        <li><strong class="text-slate-700">חלבון:</strong> 200-250ג' חזה עוף / דג (אמנון או סלמון) / בקר רזה (סינטה/שייטל) / 200-250ג' פרגית</li>
+                                        <li><strong class="text-slate-700">פחמימה:</strong> 250 גרם אורז מבושל / 300 גרם תפוח אדמה (אפוי/מבושל) / 250 גרם פסטה מבושלת / 300 גרם בטטה / 250 גרם קינואה מבושלת</li>
+                                        <li><strong class="text-slate-700">תוספת:</strong> ירקות + כף שמן זית</li>
+                                    </ul>
+                                </div>
+
+                                <!-- Meal 3 -->
+                                <div class="flex flex-col border-b border-slate-50 pb-6 last:border-0 last:pb-0">
+                                    <div class="flex flex-wrap justify-between items-center w-full mb-3 gap-2">
+                                        <span class="font-bold text-lg text-slate-800">🍎 ארוחת ביניים</span>
+                                        <div class="flex gap-2">
+                                            <span class="text-xs font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md">~300 קלוריות</span>
+                                            <span class="text-xs font-bold bg-pink-50 text-pink-600 px-2 py-1 rounded-md">~30ג' חלבון</span>
+                                        </div>
+                                    </div>
+                                    <ul class="text-sm text-slate-600 space-y-2 pr-2 border-r-2 border-emerald-100">
+                                        <li><strong class="text-slate-700">חלבון:</strong> יוגורט פרו (20ג') / סקופ אבקת חלבון / מעדן חלבון</li>
+                                        <li><strong class="text-slate-700">פחמימה:</strong> פרי אחד לבחירה (בננה / תפוח / אגס / כוס תותים / אפרסק / 2 מנדרינות)</li>
+                                    </ul>
+                                </div>
+                                
+                            </div>
+                        </div>
+
+                        <!-- Treat Card -->
+                        <div class="bg-gradient-to-r from-indigo-50 to-purple-50 border-2 border-indigo-100 rounded-2xl p-5 shadow-sm flex items-center gap-4">
+                            <div class="bg-white p-3 rounded-xl shadow-sm text-2xl">
+                                🍫
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-indigo-900 mb-1">פינוק יומי קטן</h4>
+                                <p class="text-sm text-indigo-700 font-medium">חטיף חלבון / גלידה / שוקולד מריר</p>
+                            </div>
+                        </div>
+
+                        <!-- Rules & Guidelines -->
+                        <div class="bg-blue-50 border-r-4 border-blue-500 rounded-3xl p-5 sm:p-6 shadow-sm">
+                            <h3 class="text-xl font-bold text-blue-900 mb-5 flex items-center gap-2 border-b border-blue-100 pb-3">
+                                <i data-lucide="list-checks" class="w-6 h-6 text-blue-600"></i>
+                                דגשים וכללי ברזל
+                            </h3>
+                            <ul class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm text-blue-900 font-medium">
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>לצרוך קפאין כחצי שעה לפני אימון (קפה, משקה אנרגיה).</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>לשתות המון מים לפני האימון.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>לדאוג לכמות מספקת של מלח בארוחה שלפני האימון.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>ניתן להחליף מוצרים בתוך אותה קטגוריה בתפריט.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>מומלץ לאכול את ארוחה 1 לפני אימון.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>לשמור על מרווח של כמה שעות בין כל ארוחה.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>להשתמש בספריי שמן אם מטגנים.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>אם אתה אוכל בחוץ, בחר משהו שנראה כמו בתפריט.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-500 flex-shrink-0 mt-0.5"></i>
+                                    <strong class="text-emerald-700">יש להגיע לכמות החלבון הנדרשת!</strong>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>ירקות מומלצים מכל הצבעים.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>עד 50 גרם רטבים. תבלינים באופן חופשי.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>שתייה - רק זירו. לפחות 2 ליטר מים ביום.</span>
+                                </li>
+                                <li class="flex items-start gap-2.5 md:col-span-2">
+                                    <i data-lucide="check-circle-2" class="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5"></i>
+                                    <span>סדר הארוחות אינו משנה.</span>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
                 </div>
 
